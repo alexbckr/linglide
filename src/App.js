@@ -1,12 +1,12 @@
 import "./App.css";
 import React, { Component } from "react";
-import Home from './components/Home.js';
-import WelcomeModal from './components/WelcomeModal.js';
-import SetupModal from './components/SetupModal.js';
+import Home from "./components/Home.js";
+import WelcomeModal from "./components/WelcomeModal.js";
+import SetupModal from "./components/SetupModal.js";
 import Loader from "./components/Loader.js";
-import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
-import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
-import LinglideImage from './images/android-chrome-192x192.png';
+import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
+import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
+import LinglideImage from "./images/android-chrome-192x192.png";
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -33,18 +33,16 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 3,
+      modalsShown: 0,
       inputLanguage: "",
       outputLanguage: "",
-      inputText:
-        "",
-      outputText:
-        "",
+      inputText: "",
+      outputText: "",
       isMuted: false,
       isDM: false,
       initialized: false,
       socket1: false,
-      socket2: false,
+      socket2: true,
     };
     this.recordAudio = null;
     this.recordVideo = null;
@@ -76,7 +74,7 @@ class App extends Component {
       this.receiveTranscribeResults.bind(this)
     );
 
-    socketio2.on("als-results", this.receiveTranscribeResults.bind(this));
+    // socketio2.on("als-results", this.receiveTranscribeResults.bind(this));
 
     this.startRecording();
   }
@@ -115,30 +113,30 @@ class App extends Component {
   }
 
   // Recording functions
-  recordVideoRTC(stream) {
-    player.srcObject = stream;
-    this.recordVideo = RecordRTC(stream, {
-      type: "video",
-      mimeType: "video/webm",
+  // recordVideoRTC(stream) {
+  //   player.srcObject = stream;
+  //   this.recordVideo = RecordRTC(stream, {
+  //     type: "video",
+  //     mimeType: "video/webm",
 
-      recorderType: MediaStreamRecorder,
+  //     recorderType: MediaStreamRecorder,
 
-      //1)
-      // get intervals based blobs
-      // value in milliseconds
-      // as you might not want to make detect calls every seconds
-      timeSlice: 500,
+  //     //1)
+  //     // get intervals based blobs
+  //     // value in milliseconds
+  //     // as you might not want to make detect calls every seconds
+  //     timeSlice: 500,
 
-      //2)
-      // as soon as the stream is available
-      ondataavailable: function (blob) {
-        console.log("video");
-        context.drawImage(player, 0, 0, canvas.width, canvas.height);
-        var data = canvas.toDataURL("image/jpeg", 1.0);
-        socket.emit("video-stream-transcribe", data);
-      },
-    });
-  }
+  //     //2)
+  //     // as soon as the stream is available
+  //     ondataavailable: function (blob) {
+  //       console.log("video");
+  //       context.drawImage(player, 0, 0, canvas.width, canvas.height);
+  //       var data = canvas.toDataURL("image/jpeg", 1.0);
+  //       socket.emit("video-stream-transcribe", data);
+  //     },
+  //   });
+  // }
   recordAudioRTC(stream) {
     this.recordAudio = RecordRTC(stream, {
       type: "audio",
@@ -180,35 +178,35 @@ class App extends Component {
   startRecording() {
     // disable button
     if (!this.state.initialized) return;
-    if (input != "asl") {
-      navigator.getUserMedia(
-        {
-          audio: true,
-        },
-        this.recordAudioRTC.bind(this),
-        function (error) {
-          console.error(JSON.stringify(error));
-        }
-      );
-    } else {
-      navigator.getUserMedia(
-        {
-          video: true,
-        },
-        this.recordVideoRTC.bind(this),
-        function (error) {
-          console.error(JSON.stringify(error));
-        }
-      );
-    }
+    // if (input != "asl") {
+    navigator.getUserMedia(
+      {
+        audio: true,
+      },
+      this.recordAudioRTC.bind(this),
+      function (error) {
+        console.error(JSON.stringify(error));
+      }
+    );
+    // } else {
+    //   navigator.getUserMedia(
+    //     {
+    //       video: true,
+    //     },
+    //     this.recordVideoRTC.bind(this),
+    //     function (error) {
+    //       console.error(JSON.stringify(error));
+    //     }
+    //   );
+    // }
   }
   stopRecording() {
     if (!this.state.initialized) return;
-    if (input != "asl") {
-      this.recordAudio.stopRecording();
-    } else {
-      this.recordVideo.stopRecording();
-    }
+    // if (input != "asl") {
+    this.recordAudio.stopRecording();
+    // } else {
+    //   this.recordVideo.stopRecording();
+    // }
   }
   // TTS
   playOutput(arrayBuffer) {
@@ -291,7 +289,8 @@ class App extends Component {
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
           <div onClick={() => this.toggleDM()} className="logo header-item">
-            {/* <img className="real-logo" src={LinglideImage}/> */}<b>Linglide</b>
+            {/* <img className="real-logo" src={LinglideImage}/> */}
+            <b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
             {this.state.isMuted ? (
