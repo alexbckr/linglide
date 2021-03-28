@@ -1,11 +1,20 @@
 import "./App.css";
 import React, { Component } from "react";
+<<<<<<< HEAD
 import Home from './components/Home.js';
 import WelcomeModal from './components/WelcomeModal.js';
 import SetupModal from './components/SetupModal.js';
 import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
 import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
 import LinglideImage from './images/android-chrome-192x192.png';
+=======
+import Home from "./components/Home.js";
+import WelcomeModal from "./components/WelcomeModal.js";
+import SetupModal from "./components/SetupModal.js";
+import Loader from "./components/Loader.js";
+import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
+import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
+>>>>>>> d667be0d610e38e71f581973b18dce4076ddfc4f
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -16,14 +25,9 @@ require("typeface-inter");
 const soundDelay = 4000;
 const vidDelay = 1000;
 
-const socketio1 = io(); // for the node server
-const socketio2 = io(); // for the python server
-const socket1 = socketio1.on("connect", function () {
-  console.log("socket1");
-});
-// const socket2 = socketio2.on("connect", function () {
-//   console.log("socket2");
-// });
+const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
+// const socketio2 = io(); // for the python server
+let socket1, socket2;
 
 class App extends Component {
   constructor(props) {
@@ -35,19 +39,35 @@ class App extends Component {
       modalsShown: 3,
       inputLanguage: "",
       outputLanguage: "",
+<<<<<<< HEAD
       inputText:
         "",
       outputText:
         "",
+=======
+      inputText: "",
+      outputText: "",
+>>>>>>> d667be0d610e38e71f581973b18dce4076ddfc4f
       isMuted: false,
       isDM: false,
       initialized: false,
+      socket1: false,
+      socket2: false,
     };
     this.recordAudio = null;
   }
 
   componentDidMount() {
     socketio1.on("readytogo", this.readyToGo.bind(this));
+
+    socket1 = socketio1.on("connect", this.socketReady.bind(this, "socket1"));
+    socket2 = null; // socketio2.on("connect", this.socketReady.bind(this, "socket2"));
+  }
+
+  socketReady(key) {
+    let ns = {};
+    ns[key] = true;
+    this.setState(ns);
   }
 
   readyToGo(data) {
@@ -58,6 +78,11 @@ class App extends Component {
 
     socketio1.on("tts-results", this.receiveTtsResults.bind(this));
 
+    socketio1.on(
+      "transcribe-results",
+      this.receiveTranscribeResults.bind(this)
+    );
+
     this.startRecording();
   }
 
@@ -66,9 +91,21 @@ class App extends Component {
     if (data) {
       this.setState({
         outputText:
-          this.state.outputText + "" + data.textTranslationResult.translation,
+          this.state.outputText + " " + data.textTranslationResult.translation,
       });
       ss(socket1).emit("tts", data.textTranslationResult.translation, {});
+    }
+  }
+
+  receiveTranscribeResults(data) {
+    console.log(data);
+    if (data && data.results[0] && data.results[0].alternatives[0]) {
+      this.setState({
+        inputText:
+          this.state.inputText +
+          " " +
+          data.results[0].alternatives[0].transcript,
+      });
     }
   }
 
@@ -110,6 +147,16 @@ class App extends Component {
         });
         // pipe the audio blob to the read stream
         ss.createBlobReadStream(blob).pipe(stream);
+
+        var stream2 = ss.createStream();
+        // stream directly to server
+        // it will be temp. stored locally
+        ss(socket1).emit("stream-transcribe", stream2, {
+          name: "stream.wav",
+          size: blob.size,
+        });
+        // pipe the audio blob to the read stream
+        ss.createBlobReadStream(blob).pipe(stream2);
       },
     });
 
@@ -196,6 +243,19 @@ class App extends Component {
   }
 
   render() {
+    let overlay = null;
+    if (!this.state.socket1 || !this.state.socket2) {
+      overlay = <Loader isDM={this.state.isDM}></Loader>;
+    } else if (this.state.modalsShown === 0) {
+      overlay = <WelcomeModal modalClosed={this.modalClosed} />;
+    } else if (this.state.modalsShown === 1) {
+      overlay = (
+        <SetupModal
+          modalClosed={this.modalClosed}
+          setLanguages={this.setLanguages}
+        />
+      );
+    }
     return (
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
@@ -203,18 +263,37 @@ class App extends Component {
             {/* <img className="real-logo" src={LinglideImage}/> */}<b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
-            {this.state.isMuted ?
-             <Muted className={(this.state.isDM ? "micDM " : "") + "slash-spacing mute-unmute header-item"} src={Muted} alt="mute/unmute"/>
-             : <Unmuted className={(this.state.isDM ? "micDM " : "") + "mute-unmute header-item"} src={Unmuted} alt="mute/unmute"/>
-            }
+            {this.state.isMuted ? (
+              <Muted
+                className={
+                  (this.state.isDM ? "micDM " : "") +
+                  "slash-spacing mute-unmute header-item"
+                }
+                src={Muted}
+                alt="mute/unmute"
+              />
+            ) : (
+              <Unmuted
+                className={
+                  (this.state.isDM ? "micDM " : "") + "mute-unmute header-item"
+                }
+                src={Unmuted}
+                alt="mute/unmute"
+              />
+            )}
           </div>
           {/* <div className="header-item">
             item3
           </div> */}
         </div>
-        <Home inputLanguage={this.state.inputLanguage} isDM={this.state.isDM} outputLanguage={this.state.outputLanguage} inputText={this.state.inputText} outputText={this.state.outputText}/>
-        {this.state.modalsShown===0 ? <WelcomeModal modalClosed={this.modalClosed}/> : ""}
-        {this.state.modalsShown===1 ? <SetupModal modalClosed={this.modalClosed} setLanguages={this.setLanguages}/> : ""}
+        <Home
+          inputLanguage={this.state.inputLanguage}
+          isDM={this.state.isDM}
+          outputLanguage={this.state.outputLanguage}
+          inputText={this.state.inputText}
+          outputText={this.state.outputText}
+        />
+        {overlay}
       </div>
     );
   }
