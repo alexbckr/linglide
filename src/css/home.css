@@ -1,33 +1,62 @@
 .home {
-    /* background-color: red; */
-    height: 100vh;
-    width: 100vw;
-  }
-  
-  .text-pane {
-    text-align: left;
-    overflow-y: hidden;
-
-    padding: 2vw;
-    font-size: 2rem;
-    background-color: white;
-    height: 80vh;
-    border-radius: 1vw;
-    border: 1px solid #EEEEEE;
-    box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+/* background-color: red; */
+height: 100vh;
+width: 100vw;
 }
   
-  .input-pane .output-pane {
-    float: left;
-  }
+.text-pane {
+  text-align: left;
+  overflow-y: hidden;
 
-  .pane-label {
-      padding: 4vh;
-  }
+  padding: 2vw;
+  font-size: 32px;
+  background-color: white;
+  height: 68vh;
+  border-radius: 1vw;
+  border: 1px solid #EEEEEE;
+  box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+}
   
-  .pane {
-    width: 48.5vw;
-    float: left;
-    margin-left: .75vw;
-    margin-right: .75vw;
+.input-pane .output-pane {
+  float: left;
+}
+
+.pane-label {
+  padding: 4vh;
+  padding-bottom: 2vh;
+  padding-top: 1vh;
+  color: black;
+}
+
+.language-label {
+  color: #BBBBBB;
+}
+
+.pane {
+  width: 48.5vw;
+  float: left;
+  margin-left: .75vw;
+  margin-right: .75vw;
+}
+
+@media (max-width:786px) {
+  .home {
+    display: flex;
+    flex-direction: column;
   }
+  .text-pane {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    height: 35vh;
+  }
+  .pane {
+    width: 100vw;
+    margin: 0vw;
+  }
+}
+
+@media (max-height:500px) {
+  .pane {
+    /* background-color: blue; */
+  }
+}

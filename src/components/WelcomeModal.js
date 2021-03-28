@@ -14,7 +14,7 @@ class WelcomeModal extends React.Component {
 
   render() {
     return (
-      <div id="myModal" className="welcome-modal">
+      <div id="myModal" className="modal">
           <div className="modal-content">
             <div>Hey 👋, welcome to Linglide</div>
             <div>We seamlessly translate your speech to any language in real time.</div>

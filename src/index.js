@@ -2,9 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './css/home.css';
-import './css/welcome-modal.css';
+import './css/modal.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import 'typeface-josefin-sans';
+import 'typeface-inter';
 
 ReactDOM.render(
   <React.StrictMode>

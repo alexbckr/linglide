@@ -9,8 +9,9 @@ class Pane extends React.Component {
     return (
       <div className="pane">
         <div className="pane-label">
-          {this.props.isInput === "true" ? "INPUT" : "OUTPUT"} -{" "}
-          {this.props.language}
+          {this.props.isInput === "true" ? "INPUT" : "OUTPUT"}
+          
+          <div className="language-label">{this.props.language}</div>
         </div>
         <div className="text-pane" ref={this.paneRef}>
           {this.props.text}

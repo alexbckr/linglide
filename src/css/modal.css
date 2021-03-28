@@ -1,6 +1,6 @@
-.welcome-modal {
+.modal {
     /* change this when necessary */
-    /* display: none; */
+    display: none;
 
     position: fixed;
     z-index: 1;
