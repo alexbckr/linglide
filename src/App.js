@@ -20,6 +20,11 @@ const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the n
 // const socketio2 = io(); // for the python server
 let socket1, socket2;
 
+// for asl
+const player = document.getElementById("player");
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +44,7 @@ class App extends Component {
       socket2: false,
     };
     this.recordAudio = null;
+    this.recordVideo = null;
   }
 
   componentDidMount() {
@@ -66,6 +72,8 @@ class App extends Component {
       "transcribe-results",
       this.receiveTranscribeResults.bind(this)
     );
+
+    socketio2.on("als-results", this.receiveTranscribeResults.bind(this));
 
     this.startRecording();
   }
@@ -98,7 +106,36 @@ class App extends Component {
     this.playOutput(data);
   }
 
+  receiveAslResults(data) {
+    console.log(data);
+    if (data) this.setState({ outputText: this.state.outputText + " " + data });
+  }
+
   // Recording functions
+  recordVideoRTC(stream) {
+    player.srcObject = stream;
+    this.recordVideo = RecordRTC(stream, {
+      type: "video",
+      mimeType: "video/webm",
+
+      recorderType: MediaStreamRecorder,
+
+      //1)
+      // get intervals based blobs
+      // value in milliseconds
+      // as you might not want to make detect calls every seconds
+      timeSlice: 500,
+
+      //2)
+      // as soon as the stream is available
+      ondataavailable: function (blob) {
+        console.log("video");
+        context.drawImage(player, 0, 0, canvas.width, canvas.height);
+        var data = canvas.toDataURL("image/jpeg", 1.0);
+        socket.emit("video-stream-transcribe", data);
+      },
+    });
+  }
   recordAudioRTC(stream) {
     this.recordAudio = RecordRTC(stream, {
       type: "audio",
@@ -131,16 +168,6 @@ class App extends Component {
         });
         // pipe the audio blob to the read stream
         ss.createBlobReadStream(blob).pipe(stream);
-
-        var stream2 = ss.createStream();
-        // stream directly to server
-        // it will be temp. stored locally
-        ss(socket1).emit("stream-transcribe", stream2, {
-          name: "stream.wav",
-          size: blob.size,
-        });
-        // pipe the audio blob to the read stream
-        ss.createBlobReadStream(blob).pipe(stream2);
       },
     });
 
@@ -150,20 +177,37 @@ class App extends Component {
   startRecording() {
     // disable button
     if (!this.state.initialized) return;
-    navigator.getUserMedia(
-      {
-        audio: true,
-      },
-      this.recordAudioRTC.bind(this),
-      function (error) {
-        console.error(JSON.stringify(error));
-      }
-    );
+    if (input != "asl") {
+      navigator.getUserMedia(
+        {
+          audio: true,
+        },
+        this.recordAudioRTC.bind(this),
+        function (error) {
+          console.error(JSON.stringify(error));
+        }
+      );
+    } else {
+      navigator.getUserMedia(
+        {
+          video: true,
+        },
+        this.recordVideoRTC.bind(this),
+        function (error) {
+          console.error(JSON.stringify(error));
+        }
+      );
+    }
   }
   stopRecording() {
     if (!this.state.initialized) return;
-    this.recordAudio.stopRecording();
+    if (input != "asl") {
+      this.recordAudio.stopRecording();
+    } else {
+      this.recordVideo.stopRecording();
+    }
   }
+  // TTS
   playOutput(arrayBuffer) {
     let audioContext = new AudioContext();
     let outputSource;

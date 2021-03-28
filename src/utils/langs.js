@@ -10,6 +10,7 @@ const langs = {
   "es-MX": "Spanish (Mexico)",
   "es-ES": "Spanish (Spain)",
   "th-TH": "Thai",
+  asl: "American Sign Language",
 };
 
 export default langs;
