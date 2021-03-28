@@ -3,7 +3,6 @@ import React from "react";
 class WelcomeModal extends React.Component {
   constructor(props) {
     super(props);
-    this.paneRef = React.createRef();
     // this.closeModal = this.closeModal.bind(this);
   }
 

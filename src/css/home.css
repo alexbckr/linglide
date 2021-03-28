@@ -15,6 +15,11 @@
   border: 1px solid #EEEEEE;
   box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
 }
+
+.text-paneDM {
+  background-color: rgb(26,29,34);
+  box-shadow: 0 0 0 0;
+}
   
 .input-pane .output-pane {
   float: left;
@@ -22,13 +27,21 @@
 
 .pane-label {
   padding: 4vh;
-  padding-bottom: 2vh;
-  padding-top: 1vh;
+  padding-bottom: 1vh;
+  padding-top: 2vh;
   color: black;
+}
+
+.pane-labelDM {
+  color: rgba(188,198,209);
 }
 
 .language-label {
   color: #BBBBBB;
+}
+
+.language-labelDM {
+  color: rgba(188,198,209);
 }
 
 .pane {
