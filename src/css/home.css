@@ -1,0 +1,33 @@
+.home {
+    /* background-color: red; */
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .text-pane {
+    text-align: left;
+    overflow-y: hidden;
+
+    padding: 2vw;
+    font-size: 2rem;
+    background-color: white;
+    height: 80vh;
+    border-radius: 1vw;
+    box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+
+}
+  
+  .input-pane .output-pane {
+    float: left;
+  }
+
+  .pane-label {
+      padding: 4vh;
+  }
+  
+  .pane {
+    width: 48.5vw;
+    float: left;
+    margin-left: .75vw;
+    margin-right: .75vw;
+  }
