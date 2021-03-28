@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Home from "./components/Home.js";
 import WelcomeModal from "./components/WelcomeModal.js";
 import SetupModal from "./components/SetupModal.js";
+import Loader from "./components/Loader.js";
 import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
 import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
 var io = require("socket.io-client");
@@ -15,14 +16,9 @@ require("typeface-inter");
 const soundDelay = 4000;
 const vidDelay = 1000;
 
-const socketio1 = io(); //io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
+const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
 // const socketio2 = io(); // for the python server
-const socket1 = socketio1.on("connect", function () {
-  console.log("socket1");
-});
-// const socket2 = socketio2.on("connect", function () {
-//   console.log("socket2");
-// });
+let socket1, socket2;
 
 class App extends Component {
   constructor(props) {
@@ -39,12 +35,23 @@ class App extends Component {
       isMuted: false,
       isDM: false,
       initialized: false,
+      socket1: false,
+      socket2: false,
     };
     this.recordAudio = null;
   }
 
   componentDidMount() {
     socketio1.on("readytogo", this.readyToGo.bind(this));
+
+    socket1 = socketio1.on("connect", this.socketReady.bind(this, "socket1"));
+    socket2 = null; // socketio2.on("connect", this.socketReady.bind(this, "socket2"));
+  }
+
+  socketReady(key) {
+    let ns = {};
+    ns[key] = true;
+    this.setState(ns);
   }
 
   readyToGo(data) {
@@ -220,6 +227,19 @@ class App extends Component {
   }
 
   render() {
+    let overlay = null;
+    if (!this.state.socket1 || !this.state.socket2) {
+      overlay = <Loader isDM={this.state.isDM}></Loader>;
+    } else if (this.state.modalsShown === 0) {
+      overlay = <WelcomeModal modalClosed={this.modalClosed} />;
+    } else if (this.state.modalsShown === 1) {
+      overlay = (
+        <SetupModal
+          modalClosed={this.modalClosed}
+          setLanguages={this.setLanguages}
+        />
+      );
+    }
     return (
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
@@ -257,19 +277,7 @@ class App extends Component {
           inputText={this.state.inputText}
           outputText={this.state.outputText}
         />
-        {this.state.modalsShown === 0 ? (
-          <WelcomeModal modalClosed={this.modalClosed} />
-        ) : (
-          ""
-        )}
-        {this.state.modalsShown === 1 ? (
-          <SetupModal
-            modalClosed={this.modalClosed}
-            setLanguages={this.setLanguages}
-          />
-        ) : (
-          ""
-        )}
+        {overlay}
       </div>
     );
   }
