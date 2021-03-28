@@ -30,9 +30,9 @@
 
 .modal-content {
     background-color: #fefefe;
-    margin: 35vh auto;
+    margin: 36vh auto;
     padding: 20px;
-    width: 30vw;
+    width: 35vw;
     height: 20vh;
 
     border-radius: 1rem;
@@ -45,7 +45,7 @@
     margin: 35vh auto;
     padding: 20px;
     width: 35vw;
-    height: 20vh;
+    height: 23vh;
 
     border-radius: 1rem;
     border: 1px solid #EEEEEE;
@@ -81,6 +81,11 @@
     margin-right: auto;
 }
 
+.done-button {
+    margin-top: 10px;
+    display: block;
+}
+
 .onboarding-button:hover {
     background-color: rgba(0,209,178,.1);
     cursor: pointer;
@@ -98,6 +103,23 @@ button:focus {
 .setup-subtitle {
     margin-top: 15px;
     font-size: 14px;
+}
+
+.lang-pair {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.first-lang-pair {
+    margin-top: 10px;
+}
+
+.input-ls {
+    margin-left: 11px;
+}
+
+.output-ls {
+    margin-left: 1px;
 }
 
 .lang-select {
@@ -131,12 +153,12 @@ button:focus {
     display: inline-block;
 }
 
-@media (max-width:1250px) {
+@media (max-width:1300px) {
     .modal-content {
         width: 40vw;
     }
 }
-@media (max-width:920px) {
+@media (max-width:1200px) {
     .modal-content {
         width: 60vw;
     }
@@ -147,10 +169,17 @@ button:focus {
     }
 }
 
-@media (max-height:600px) {
+@media (max-height:650px) {
     .modal-content {
-        height: 30vh;
+        height: 40vh;
         margin: 25vh auto;
+    }
+}
+
+@media (max-height:450px) {
+    .modal-content {
+        height: 60vh;
+        margin: 15vh auto;
     }
 }
 
