@@ -1,11 +1,12 @@
 import "./App.css";
 import React, { Component } from "react";
-import Home from "./components/Home.js";
-import WelcomeModal from "./components/WelcomeModal.js";
-import SetupModal from "./components/SetupModal.js";
+import Home from './components/Home.js';
+import WelcomeModal from './components/WelcomeModal.js';
+import SetupModal from './components/SetupModal.js';
 import Loader from "./components/Loader.js";
-import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
-import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
+import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
+import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
+import LinglideImage from './images/android-chrome-192x192.png';
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -32,11 +33,13 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 1,
+      modalsShown: 3,
       inputLanguage: "",
       outputLanguage: "",
-      inputText: "",
-      outputText: "",
+      inputText:
+        "",
+      outputText:
+        "",
       isMuted: false,
       isDM: false,
       initialized: false,
@@ -288,7 +291,7 @@ class App extends Component {
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
           <div onClick={() => this.toggleDM()} className="logo header-item">
-            <b>Linglide</b>
+            {/* <img className="real-logo" src={LinglideImage}/> */}<b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
             {this.state.isMuted ? (

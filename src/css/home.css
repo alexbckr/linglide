@@ -49,6 +49,29 @@
   float: left;
   margin-left: .75vw;
   margin-right: .75vw;
+  justify-content: center;
+}
+
+.pane-empty {
+  text-align: center!important;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.speaker-prompt {
+  height: 5rem;
+  margin-top: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(188,198,209);
+  stroke: rgba(188,198,209);
+  fill: rgba(188,198,209);
+}
+
+.speaker-prompt-text {
+  margin-top: 5vh;
+  color: rgba(188,198,209);
 }
 
 @media (max-width:786px) {
@@ -73,5 +96,11 @@
   }
   .text-pane {
     height: 60vh;
+  }
+}
+
+@media (max-height:300px) {
+  .text-pane {
+    height: 50vh;
   }
 }
