@@ -1,0 +1,11 @@
+flask==1.1.2
+flask-login
+flask-session
+flask_socketIO
+itsdangerous
+jinja2
+markupsafe
+python-engineio
+python-socketio
+six
+werkzeug
