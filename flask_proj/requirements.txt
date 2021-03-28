@@ -9,3 +9,14 @@ python-engineio
 python-socketio
 six
 werkzeug
+numpy
+io
+PIL
+re
+base64
+keras
+cv2
+imutils
+scipy
+requests
+ximilar.client

@@ -1,9 +1,17 @@
+from classify_gesture import *
+
 #!/usr/bin/env python
 from threading import Lock
 from flask import Flask, render_template, session, request, \
     copy_current_request_context, send_from_directory
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
+
+import numpy as np
+import io
+import PIL.Image as Image
+import re
+import base64
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -15,7 +23,32 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
+last_gestures = []
 
+@socketio.on('video-stream-transcribe')
+def transcribe(data):
+    global last_gestures
+    image_data = base64.b64decode(re.sub('^data:image/.+;base64,', '', data))
+    pil_image = Image.open(io.BytesIO(image_data))
+    # image = Image.open(io.BytesIO(data))
+    open_cv_image = np.array(pil_image)
+    open_cv_image = open_cv_image[:, :, ::-1].copy()
+    gesture_class = classify_gesture(open_cv_image)
+
+    # new gesture detected
+    if not gesture_class in last_gestures:
+        print(gesture_class) 
+        last_gestures.append(gesture_class) # update tracker for new
+        
+        if gesture_class == 'hello':
+            gesture_class = 'Hello'
+        elif gesture_class == 'wassup':
+            gesture_class = "What's up?"
+        elif gesture_class = 'love':
+            gesture_class = 'I love you'
+        
+        if gesture_class:
+            emit('asl-results', gesture_class)
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -30,6 +63,11 @@ def background_thread():
 @app.route('/')
 def index():
     return render_template('index.html', async_mode=socketio.async_mode)
+    # return send_from_directory(app.static_folder,'index.html')
+
+@app.route('/ex')
+def ex():
+    return render_template('example9.html', async_mode=socketio.async_mode)
     # return send_from_directory(app.static_folder,'index.html')
 
 
