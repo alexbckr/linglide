@@ -7,7 +7,7 @@ class Pane extends React.Component {
 
   render() {
     return (
-      <div className="pane">
+      <div className={this.props.isInput === "true" ? "input-pane pane" : "pane"}>
         <div className="pane-label">
           {this.props.isInput === "true" ? "INPUT" : "OUTPUT"}
           

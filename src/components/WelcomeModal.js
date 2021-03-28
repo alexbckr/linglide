@@ -16,10 +16,10 @@ class WelcomeModal extends React.Component {
     return (
       <div id="myModal" className="modal">
           <div className="modal-content">
-            <div>Hey 👋, welcome to Linglide</div>
-            <div>We seamlessly translate your speech to any language in real time.</div>
+            <div className="welcome-text">Hey 👋, welcome to Linglide</div>
+            <div className="value-prop">We seamlessly translate your speech to any language in real time.</div>
             {/*<div>Set us as your Zoom output so your partner can understand your speech</div> */}
-            <button onClick={this.props.modalClosed}>
+            <button className="onboarding-button" onClick={this.props.modalClosed}>
                 Set up Linglide
             </button>
           </div>

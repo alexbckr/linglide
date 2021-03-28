@@ -25,8 +25,9 @@ class SetupModal extends React.Component {
   render() {
     return (
       <div id="myModal" className="setup-modal">
-          <div className="modal-content">
-            <div>This is the second modal</div>
+          <div className="setup-modal-content modal-content">
+            <div className="setup-prompt">Select an "input" language and an "output" language.</div>
+            <div className="setup-subtitle">We'll translate the lanaguage you're speaking into the output language</div>
             <select id="input-language-dropdown">
                 <option value="English">English</option>
                 <option value="Mandarin">Mandarin</option>

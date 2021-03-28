@@ -31,6 +31,17 @@
   opacity: .4;
 }
 
+.mute-unmute {
+  height: 20px;
+  padding: 8px;
+}
+
+.slash-spacing {
+  padding-left: 2px;
+  padding-right: 0px;
+  margin-right: 42.5px;
+}
+
 .header-item:hover {
   opacity: 1;
 }
@@ -55,5 +66,15 @@
   }
   .logo {
     font-size: 22px!important;
+  }
+  .slash-spacing {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 28.5px;
+  }
+  .mute-unmute {
+    margin-top: 0px;
+    height: 20px;
+    padding: 8px;
   }
 }

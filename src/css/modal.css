@@ -1,6 +1,6 @@
 .modal {
     /* change this when necessary */
-    display: none;
+    /* display: none; */
 
     position: fixed;
     z-index: 1;
@@ -35,7 +35,69 @@
     width: 30vw;
     height: 20vh;
 
-    border-radius: 1vw;
+    border-radius: 1rem;
     border: 1px solid #EEEEEE;
     box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+}
+
+.setup-modal-content {
+    background-color: #fefefe;
+    margin: 35vh auto;
+    padding: 20px;
+    width: 35vw;
+    height: 20vh;
+
+    border-radius: 1rem;
+    border: 1px solid #EEEEEE;
+    box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+}
+
+.welcome-text {
+    font-size: 28px;
+    margin-top:3px;
+}
+
+/* .title {
+    font-family: 'Josefin Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    font-size: 26px;
+} */
+
+.value-prop {
+    margin-top: 20px;
+}
+
+.onboarding-button {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 2rem;
+    border: 1px solid grey;
+}
+
+.setup-prompt {
+    font-size: 20px;
+}
+
+@media (max-width:1250px) {
+    .modal-content {
+        width: 40vw;
+    }
+}
+@media (max-width:920px) {
+    .modal-content {
+        width: 60vw;
+    }
+}
+@media (max-width:620px) {
+    .modal-content {
+        width: 80vw;
+    }
+}
+
+@media (max-height:600px) {
+    .modal-content {
+        height: 30vh;
+        margin: 25vh auto;
+    }
 }

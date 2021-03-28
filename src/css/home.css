@@ -1,5 +1,4 @@
 .home {
-/* background-color: red; */
 height: 100vh;
 width: 100vw;
 }
@@ -55,8 +54,11 @@ width: 100vw;
   }
 }
 
-@media (max-height:500px) {
-  .pane {
-    /* background-color: blue; */
+@media (max-height:450px) {
+  .input-pane {
+    display: none!important;
+  }
+  .text-pane {
+    height: 60vh;
   }
 }
