@@ -1,10 +1,10 @@
 import "./App.css";
 import React, { Component } from "react";
-import Home from "./components/Home.js";
-import WelcomeModal from "./components/WelcomeModal.js";
-import SetupModal from "./components/SetupModal.js";
-import Muted from "./images/microphone-alt-slash-solid.svg";
-import Unmuted from "./images/microphone-alt-solid.svg";
+import Home from './components/Home.js';
+import WelcomeModal from './components/WelcomeModal.js';
+import SetupModal from './components/SetupModal.js';
+import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
+import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -31,7 +31,7 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 0,
+      modalsShown: 1,
       inputLanguage: "",
       outputLanguage: "",
       inputText:
@@ -196,47 +196,24 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="header">
+      <div className={this.state.isDM ? "AppDM App" : "App"}>
+        <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
           <div onClick={() => this.toggleDM()} className="logo header-item">
             <b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
-            {this.state.isMuted ? (
-              <img
-                className="slash-spacing mute-unmute header-item"
-                src={Muted}
-                alt="mute/unmute"
-              />
-            ) : (
-              <img
-                className="mute-unmute header-item"
-                src={Unmuted}
-                alt="mute/unmute"
-              />
-            )}
+            {this.state.isMuted ?
+             <Muted className={(this.state.isDM ? "micDM " : "") + "slash-spacing mute-unmute header-item"} src={Muted} alt="mute/unmute"/>
+             : <Unmuted className={(this.state.isDM ? "micDM " : "") + "mute-unmute header-item"} src={Unmuted} alt="mute/unmute"/>
+            }
           </div>
-          <div className="header-item">item3</div>
+          {/* <div className="header-item">
+            item3
+          </div> */}
         </div>
-        <Home
-          inputLanguage={this.state.inputLanguage}
-          outputLanguage={this.state.outputLanguage}
-          inputText={this.state.inputText}
-          outputText={this.state.outputText}
-        />
-        {this.state.modalsShown === 0 ? (
-          <WelcomeModal modalClosed={this.modalClosed} />
-        ) : (
-          ""
-        )}
-        {this.state.modalsShown === 1 ? (
-          <SetupModal
-            modalClosed={this.modalClosed}
-            setLanguages={this.setLanguages}
-          />
-        ) : (
-          ""
-        )}
+        <Home inputLanguage={this.state.inputLanguage} isDM={this.state.isDM} outputLanguage={this.state.outputLanguage} inputText={this.state.inputText} outputText={this.state.outputText}/>
+        {this.state.modalsShown===0 ? <WelcomeModal modalClosed={this.modalClosed}/> : ""}
+        {this.state.modalsShown===1 ? <SetupModal modalClosed={this.modalClosed} setLanguages={this.setLanguages}/> : ""}
       </div>
     );
   }

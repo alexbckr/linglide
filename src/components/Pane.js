@@ -11,12 +11,12 @@ class Pane extends React.Component {
       <div
         className={this.props.isInput === "true" ? "input-pane pane" : "pane"}
       >
-        <div className="pane-label">
+        <div className={(this.props.isDM ? "pane-labelDM " : "") + "pane-label"}>
           {this.props.isInput === "true" ? "INPUT" : "OUTPUT"}
 
-          <div className="language-label">{langs[this.props.language]}</div>
+          <div className={(this.props.isDM ? "language-labelDM " : "") + "language-label"}>{langs[this.props.language]}</div>
         </div>
-        <div className="text-pane" ref={this.paneRef}>
+        <div className={(this.props.isDM ? "text-paneDM " : "") + "text-pane"}>
           {this.props.text}
         </div>
       </div>
