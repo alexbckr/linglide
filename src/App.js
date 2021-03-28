@@ -1,21 +1,13 @@
 import "./App.css";
 import React, { Component } from "react";
-<<<<<<< HEAD
 import Home from './components/Home.js';
 import WelcomeModal from './components/WelcomeModal.js';
 import SetupModal from './components/SetupModal.js';
 import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
 import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
-=======
-import Home from "./components/Home.js";
-import WelcomeModal from "./components/WelcomeModal.js";
-import SetupModal from "./components/SetupModal.js";
-import Muted from "./images/microphone-alt-slash-solid.svg";
-import Unmuted from "./images/microphone-alt-solid.svg";
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
->>>>>>> 3a8cc47eefa4fd6ae0bc32491f03b33a90b6f70b
 
 require("typeface-josefin-sans");
 require("typeface-inter");
@@ -39,7 +31,7 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 1,
+      modalsShown: 0,
       inputLanguage: "",
       outputLanguage: "",
       inputText:
