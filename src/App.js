@@ -1,12 +1,12 @@
 import "./App.css";
 import React, { Component } from "react";
-import Home from './components/Home.js';
-import WelcomeModal from './components/WelcomeModal.js';
-import SetupModal from './components/SetupModal.js';
+import Home from "./components/Home.js";
+import WelcomeModal from "./components/WelcomeModal.js";
+import SetupModal from "./components/SetupModal.js";
 import Loader from "./components/Loader.js";
-import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
-import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
-import LinglideImage from './images/android-chrome-192x192.png';
+import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
+import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
+import LinglideImage from "./images/android-chrome-192x192.png";
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -18,7 +18,7 @@ const soundDelay = 4000;
 const vidDelay = 1000;
 
 const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
-// const socketio2 = io(); // for the python server
+const socketio2 = io(); // for the python server
 let socket1, socket2;
 
 // for asl
@@ -36,10 +36,8 @@ class App extends Component {
       modalsShown: 3,
       inputLanguage: "",
       outputLanguage: "",
-      inputText:
-        "",
-      outputText:
-        "",
+      inputText: "",
+      outputText: "",
       isMuted: false,
       isDM: false,
       initialized: false,
@@ -111,7 +109,10 @@ class App extends Component {
 
   receiveAslResults(data) {
     console.log(data);
-    if (data) this.setState({ outputText: this.state.outputText + " " + data });
+    if (data) {
+      this.setState({ outputText: this.state.outputText + " " + data });
+      ss(socket1).emit("tts", data, {});
+    }
   }
 
   // Recording functions
@@ -121,7 +122,7 @@ class App extends Component {
       type: "video",
       mimeType: "video/webm",
 
-      recorderType: MediaStreamRecorder,
+      recorderType: RecordRTC.MediaStreamRecorder,
 
       //1)
       // get intervals based blobs
@@ -135,7 +136,7 @@ class App extends Component {
         console.log("video");
         context.drawImage(player, 0, 0, canvas.width, canvas.height);
         var data = canvas.toDataURL("image/jpeg", 1.0);
-        socket.emit("video-stream-transcribe", data);
+        socket2.emit("video-stream-transcribe", data);
       },
     });
   }
@@ -180,7 +181,7 @@ class App extends Component {
   startRecording() {
     // disable button
     if (!this.state.initialized) return;
-    if (input != "asl") {
+    if (this.state.inputLanguage != "asl") {
       navigator.getUserMedia(
         {
           audio: true,
@@ -204,7 +205,7 @@ class App extends Component {
   }
   stopRecording() {
     if (!this.state.initialized) return;
-    if (input != "asl") {
+    if (this.state.inputLanguage != "asl") {
       this.recordAudio.stopRecording();
     } else {
       this.recordVideo.stopRecording();
@@ -291,7 +292,8 @@ class App extends Component {
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
           <div onClick={() => this.toggleDM()} className="logo header-item">
-            {/* <img className="real-logo" src={LinglideImage}/> */}<b>Linglide</b>
+            {/* <img className="real-logo" src={LinglideImage}/> */}
+            <b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
             {this.state.isMuted ? (
