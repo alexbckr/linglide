@@ -48,6 +48,10 @@ div {
   user-select: none;
 }
 
+.real-logo {
+  height: 22px;
+}
+
 .header-item {
   line-height: 40px;
   margin-top: 20px;

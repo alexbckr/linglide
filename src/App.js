@@ -5,6 +5,7 @@ import WelcomeModal from './components/WelcomeModal.js';
 import SetupModal from './components/SetupModal.js';
 import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
 import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
+import LinglideImage from './images/android-chrome-192x192.png';
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -31,13 +32,13 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 1,
+      modalsShown: 3,
       inputLanguage: "",
       outputLanguage: "",
       inputText:
-        "This is a cool thing. I'm having fun with my friends. This is neat. I'm going to type more example text.",
+        "",
       outputText:
-        "Esto es genial. Me estoy divirtiendo con mis amigos. Esto es genial. Voy a escribir más texto de ejemplo.",
+        "",
       isMuted: false,
       isDM: false,
       initialized: false,
@@ -199,7 +200,7 @@ class App extends Component {
       <div className={this.state.isDM ? "AppDM App" : "App"}>
         <div className={(this.state.isDM ? "headerDM " : "") + "header"}>
           <div onClick={() => this.toggleDM()} className="logo header-item">
-            <b>Linglide</b>
+            {/* <img className="real-logo" src={LinglideImage}/> */}<b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
             {this.state.isMuted ?
