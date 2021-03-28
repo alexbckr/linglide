@@ -44,7 +44,7 @@ def transcribe(data):
             gesture_class = 'Hello'
         elif gesture_class == 'wassup':
             gesture_class = "What's up?"
-        elif gesture_class = 'love':
+        elif gesture_class == 'love':
             gesture_class = 'I love you'
         
         if gesture_class:
