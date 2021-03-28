@@ -1,20 +1,12 @@
 import "./App.css";
 import React, { Component } from "react";
-<<<<<<< HEAD
 import Home from './components/Home.js';
 import WelcomeModal from './components/WelcomeModal.js';
 import SetupModal from './components/SetupModal.js';
+import Loader from "./components/Loader.js";
 import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
 import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
 import LinglideImage from './images/android-chrome-192x192.png';
-=======
-import Home from "./components/Home.js";
-import WelcomeModal from "./components/WelcomeModal.js";
-import SetupModal from "./components/SetupModal.js";
-import Loader from "./components/Loader.js";
-import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
-import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
->>>>>>> d667be0d610e38e71f581973b18dce4076ddfc4f
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -39,15 +31,10 @@ class App extends Component {
       modalsShown: 3,
       inputLanguage: "",
       outputLanguage: "",
-<<<<<<< HEAD
       inputText:
         "",
       outputText:
         "",
-=======
-      inputText: "",
-      outputText: "",
->>>>>>> d667be0d610e38e71f581973b18dce4076ddfc4f
       isMuted: false,
       isDM: false,
       initialized: false,
