@@ -1,5 +1,6 @@
 import React from "react";
 import Select from 'react-select';
+import langs from "../utils/langs";
 
 class SetupModal extends React.Component {
   constructor(props) {
@@ -11,23 +12,36 @@ class SetupModal extends React.Component {
       { value: 'Rus', label: 'Russian' }
     ]
     // this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      inputLang: "en-US",
+      outputLang: "en-US",
+    };
   }
 
-//   closeModal() {
-//     var modal = document.getElementById("myModal")
-//     modal.style.display = "none";
-//   }
+  //   closeModal() {
+  //     var modal = document.getElementById("myModal")
+  //     modal.style.display = "none";
+  //   }
 
   doneClicked() {
-    console.log("done clicked")
-    this.props.modalClosed()
-    var inputLanguage = document.getElementById("input-language-dropdown").value
-    var outputLanguage = document.getElementById("output-language-dropdown").value
-    this.props.setLanguages(inputLanguage, outputLanguage)
-      
+    console.log("done clicked");
+    this.props.setLanguages(this.state.inputLang, this.state.outputLang);
+    this.props.modalClosed();
+  }
+
+  updateInput(e) {
+    this.setState({ inputLang: e.target.value });
+  }
+  updateOutput(e) {
+    this.setState({ outputLang: e.target.value });
   }
 
   render() {
+    const dropdown = Object.keys(langs).map((key) => (
+      <option key={key} value={key}>
+        {langs[key]}
+      </option>
+    ));
     return (
       <div id="myModal" className="setup-modal">
           <div className="setup-modal-content modal-content">
@@ -59,6 +73,22 @@ class SetupModal extends React.Component {
                 Done
             </button>
           </div>
+          <select
+            id="input-language-dropdown"
+            onChange={this.updateInput.bind(this)}
+            value={this.state.inputLang}
+          >
+            {dropdown}
+          </select>
+          <select
+            id="output-language-dropdown"
+            onChange={this.updateOutput.bind(this)}
+            value={this.state.outputLang}
+          >
+            {dropdown}
+          </select>
+
+          <button onClick={this.doneClicked}>Done</button>
       </div>
     );
   }
