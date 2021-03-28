@@ -18,7 +18,7 @@ const soundDelay = 4000;
 const vidDelay = 1000;
 
 const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
-// const socketio2 = io(); // for the python server
+const socketio2 = io(); // for the python server
 let socket1, socket2;
 
 // for asl
@@ -109,7 +109,10 @@ class App extends Component {
 
   receiveAslResults(data) {
     console.log(data);
-    if (data) this.setState({ outputText: this.state.outputText + " " + data });
+    if (data) {
+      this.setState({ outputText: this.state.outputText + " " + data });
+      ss(socket1).emit("tts", data, {});
+    }
   }
 
   // Recording functions
@@ -118,9 +121,6 @@ class App extends Component {
   //   this.recordVideo = RecordRTC(stream, {
   //     type: "video",
   //     mimeType: "video/webm",
-
-  //     recorderType: MediaStreamRecorder,
-
   //     //1)
   //     // get intervals based blobs
   //     // value in milliseconds
@@ -178,35 +178,35 @@ class App extends Component {
   startRecording() {
     // disable button
     if (!this.state.initialized) return;
-    // if (input != "asl") {
-    navigator.getUserMedia(
-      {
-        audio: true,
-      },
-      this.recordAudioRTC.bind(this),
-      function (error) {
-        console.error(JSON.stringify(error));
-      }
-    );
-    // } else {
-    //   navigator.getUserMedia(
-    //     {
-    //       video: true,
-    //     },
-    //     this.recordVideoRTC.bind(this),
-    //     function (error) {
-    //       console.error(JSON.stringify(error));
-    //     }
-    //   );
-    // }
+    if (this.state.inputLanguage != "asl") {
+      navigator.getUserMedia(
+        {
+          audio: true,
+        },
+        this.recordAudioRTC.bind(this),
+        function (error) {
+          console.error(JSON.stringify(error));
+        }
+      );
+    } else {
+      navigator.getUserMedia(
+        {
+          video: true,
+        },
+        this.recordVideoRTC.bind(this),
+        function (error) {
+          console.error(JSON.stringify(error));
+        }
+      );
+    }
   }
   stopRecording() {
     if (!this.state.initialized) return;
-    // if (input != "asl") {
-    this.recordAudio.stopRecording();
-    // } else {
-    //   this.recordVideo.stopRecording();
-    // }
+    if (this.state.inputLanguage != "asl") {
+      this.recordAudio.stopRecording();
+    } else {
+      this.recordVideo.stopRecording();
+    }
   }
   // TTS
   playOutput(arrayBuffer) {
