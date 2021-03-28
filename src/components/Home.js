@@ -9,8 +9,8 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home">
-        <Pane myModalClosed={this.props.modalClosed} className="input-pane" isInput="true" language={this.props.inputLanguage} text={this.props.inputText} />
-        <Pane className="output-pane" isInput="false" language={this.props.outputLanguage} text={this.props.outputText}/>
+        <Pane isDM={this.props.isDM} myModalClosed={this.props.modalClosed} className="input-pane" isInput="true" language={this.props.inputLanguage} text={this.props.inputText} />
+        <Pane isDM={this.props.isDM} className="output-pane" isInput="false" language={this.props.outputLanguage} text={this.props.outputText}/>
       </div>
     );
   }

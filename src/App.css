@@ -4,12 +4,35 @@
   width: 100vw;
 }
 
+.AppDM {
+  background-color: rgb(12,14,17);
+  color: rgba(188,198,209);
+}
+
+div {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
 .header {
+  background-color: white!important;
   height: 80px;
-  background-color: #EEEEEE;
   padding-left: 40px;
   padding-right: 40px;
   text-align: left;
+}
+
+.headerDM {
+  background-color: rgb(12,14,17)!important;
+  color: rgba(188,198,209);
+}
+
+.micDM {
+  fill: rgba(188,198,209);
+  stroke: rgba(188,198,209);
+  color: rgba(188,198,209);
 }
 
 .logo {
@@ -18,6 +41,11 @@
   font-family: 'Josefin Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
 }
 
 .header-item {
