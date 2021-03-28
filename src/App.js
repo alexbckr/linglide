@@ -32,7 +32,7 @@ class App extends Component {
     this.setLanguages = this.setLanguages.bind(this);
     this.toggleMute = this.toggleMute.bind(this);
     this.state = {
-      modalsShown: 3,
+      modalsShown: 0,
       inputLanguage: "",
       outputLanguage: "",
       inputText:
