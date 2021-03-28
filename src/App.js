@@ -14,7 +14,7 @@ var RecordRTC = require("recordrtc");
 require("typeface-josefin-sans");
 require("typeface-inter");
 
-const soundDelay = 4000;
+const soundDelay = 2000;
 const vidDelay = 1000;
 
 const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
