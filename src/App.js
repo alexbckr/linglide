@@ -1,10 +1,10 @@
 import "./App.css";
 import React, { Component } from "react";
-import Home from './components/Home.js';
-import WelcomeModal from './components/WelcomeModal.js';
-import SetupModal from './components/SetupModal.js';
-import {ReactComponent as Muted} from './images/microphone-alt-slash-solid.svg';
-import {ReactComponent as Unmuted} from './images/microphone-alt-solid.svg';
+import Home from "./components/Home.js";
+import WelcomeModal from "./components/WelcomeModal.js";
+import SetupModal from "./components/SetupModal.js";
+import { ReactComponent as Muted } from "./images/microphone-alt-slash-solid.svg";
+import { ReactComponent as Unmuted } from "./images/microphone-alt-solid.svg";
 var io = require("socket.io-client");
 var ss = require("socket.io-stream");
 var RecordRTC = require("recordrtc");
@@ -15,8 +15,8 @@ require("typeface-inter");
 const soundDelay = 4000;
 const vidDelay = 1000;
 
-const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
-const socketio2 = io(); // for the python server
+const socketio1 = io(); //io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
+// const socketio2 = io(); // for the python server
 const socket1 = socketio1.on("connect", function () {
   console.log("socket1");
 });
@@ -34,10 +34,8 @@ class App extends Component {
       modalsShown: 1,
       inputLanguage: "",
       outputLanguage: "",
-      inputText:
-        "This is a cool thing. I'm having fun with my friends. This is neat. I'm going to type more example text.",
-      outputText:
-        "Esto es genial. Me estoy divirtiendo con mis amigos. Esto es genial. Voy a escribir más texto de ejemplo.",
+      inputText: "",
+      outputText: "",
       isMuted: false,
       isDM: false,
       initialized: false,
@@ -57,6 +55,11 @@ class App extends Component {
 
     socketio1.on("tts-results", this.receiveTtsResults.bind(this));
 
+    socketio1.on(
+      "transcribe-results",
+      this.receiveTranscribeResults.bind(this)
+    );
+
     this.startRecording();
   }
 
@@ -65,9 +68,21 @@ class App extends Component {
     if (data) {
       this.setState({
         outputText:
-          this.state.outputText + "" + data.textTranslationResult.translation,
+          this.state.outputText + " " + data.textTranslationResult.translation,
       });
       ss(socket1).emit("tts", data.textTranslationResult.translation, {});
+    }
+  }
+
+  receiveTranscribeResults(data) {
+    console.log(data);
+    if (data && data.results[0] && data.results[0].alternatives[0]) {
+      this.setState({
+        inputText:
+          this.state.inputText +
+          " " +
+          data.results[0].alternatives[0].transcript,
+      });
     }
   }
 
@@ -109,6 +124,16 @@ class App extends Component {
         });
         // pipe the audio blob to the read stream
         ss.createBlobReadStream(blob).pipe(stream);
+
+        var stream2 = ss.createStream();
+        // stream directly to server
+        // it will be temp. stored locally
+        ss(socket1).emit("stream-transcribe", stream2, {
+          name: "stream.wav",
+          size: blob.size,
+        });
+        // pipe the audio blob to the read stream
+        ss.createBlobReadStream(blob).pipe(stream2);
       },
     });
 
@@ -202,18 +227,49 @@ class App extends Component {
             <b>Linglide</b>
           </div>
           <div onClick={() => this.toggleMute()}>
-            {this.state.isMuted ?
-             <Muted className={(this.state.isDM ? "micDM " : "") + "slash-spacing mute-unmute header-item"} src={Muted} alt="mute/unmute"/>
-             : <Unmuted className={(this.state.isDM ? "micDM " : "") + "mute-unmute header-item"} src={Unmuted} alt="mute/unmute"/>
-            }
+            {this.state.isMuted ? (
+              <Muted
+                className={
+                  (this.state.isDM ? "micDM " : "") +
+                  "slash-spacing mute-unmute header-item"
+                }
+                src={Muted}
+                alt="mute/unmute"
+              />
+            ) : (
+              <Unmuted
+                className={
+                  (this.state.isDM ? "micDM " : "") + "mute-unmute header-item"
+                }
+                src={Unmuted}
+                alt="mute/unmute"
+              />
+            )}
           </div>
           {/* <div className="header-item">
             item3
           </div> */}
         </div>
-        <Home inputLanguage={this.state.inputLanguage} isDM={this.state.isDM} outputLanguage={this.state.outputLanguage} inputText={this.state.inputText} outputText={this.state.outputText}/>
-        {this.state.modalsShown===0 ? <WelcomeModal modalClosed={this.modalClosed}/> : ""}
-        {this.state.modalsShown===1 ? <SetupModal modalClosed={this.modalClosed} setLanguages={this.setLanguages}/> : ""}
+        <Home
+          inputLanguage={this.state.inputLanguage}
+          isDM={this.state.isDM}
+          outputLanguage={this.state.outputLanguage}
+          inputText={this.state.inputText}
+          outputText={this.state.outputText}
+        />
+        {this.state.modalsShown === 0 ? (
+          <WelcomeModal modalClosed={this.modalClosed} />
+        ) : (
+          ""
+        )}
+        {this.state.modalsShown === 1 ? (
+          <SetupModal
+            modalClosed={this.modalClosed}
+            setLanguages={this.setLanguages}
+          />
+        ) : (
+          ""
+        )}
       </div>
     );
   }
