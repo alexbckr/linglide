@@ -17,7 +17,7 @@ require("typeface-inter");
 const soundDelay = 2000;
 const vidDelay = 1000;
 
-const socketio1 = io(); //"https://the-slate-309023.uk.r.appspot.com/" // for the node server
+const socketio1 = io("https://the-slate-309023.uk.r.appspot.com/"); // for the node server
 // const socketio2 = io(); // for the python server
 let socket1, socket2;
 
